@@ -93,10 +93,10 @@ class webserverHandler(BaseHTTPRequestHandler):
             return
             if ctype == 'multipart/form-data':
                 fields = cgi.parse_multipart(self.rfile, pdict)
-                restrauntIDPath = self.path.split("/")[2]
-                myRestaurantQuery = session.query(Restaurant).filter_by(id=restrauntIDPath). one()
                 restaurantname = fields.get('updaterestraunt')
 
+            restrauntIDPath = self.path.split("/")[2]
+            myRestaurantQuery = session.query(Restaurant).filter_by(id=restrauntIDPath). one()
             output = ""
 
             output += "<form method='POST' enctype='multipart/form-data' action='/restaurants/%s/edit'>" % restrauntIDPath
