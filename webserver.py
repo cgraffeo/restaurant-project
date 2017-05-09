@@ -97,18 +97,18 @@ class webserverHandler(BaseHTTPRequestHandler):
                 myRestaurantQuery = session.query(Restaurant).filter_by(id=restrauntIDPath). one()
                 restaurantname = fields.get('updaterestraunt')
 
-                output = ""
+            output = ""
 
-                output += "<form method='POST' enctype='multipart/form-data' action='/restaurants/%s/edit'>" % restrauntIDPath
-                output += "<input name='updaterestraunt' type='text'>"
-                output += "<input type='submit' value='Rename'> </form>"
-                output += "</body></html>"
-                self.wfile.write(output)
-                editRestaurant = Restaurant(name="updaterestraunt")
-                session.add(editRestaurant)
-                session.commit()
-                print output
-                return
+            output += "<form method='POST' enctype='multipart/form-data' action='/restaurants/%s/edit'>" % restrauntIDPath
+            output += "<input name='updaterestraunt' type='text'>"
+            output += "<input type='submit' value='Rename'> </form>"
+            output += "</body></html>"
+            self.wfile.write(output)
+            editRestaurant = Restaurant(name="updaterestraunt")
+            session.add(editRestaurant)
+            session.commit()
+            print output
+            return
         except IOError:
                     pass
 
