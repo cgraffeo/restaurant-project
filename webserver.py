@@ -74,41 +74,43 @@ class webserverHandler(BaseHTTPRequestHandler):
             self.end_headers()
 
             ctype, pdict = cgi.parse_header(self.headers.getheader('content-type'))
-            if ctype == 'multipart/form-data':
-                fields = cgi.parse_multipart(self.rfile, pdict)
-                newrestaurantname = fields.get('newrestraunt')
-            output = ""
-            output += "<html><body>"
-            output += "<h2> The following restraunt has been added, thank you! </h2>"
-            output += "<h1> %s </h1>" % newrestaurantname[0]
-            output += "<h4> Would you like to enter another? </h2>"
-            output += "<form method='POST' enctype='multipart/form-data' action='/restaurants/new'><h2>Please add a new restraunt below</h2><input name='newrestraunt' type='text' ><input type='submit' value='Create'> </form>"
-            output += "<a href='/restaurants'> Return to the home page </a>"
-            output += "</body></html>"
-            self.wfile.write(output)
-            addNewRestraunt = Restaurant(name=newrestaurantname[0])
-            session.add(addNewRestraunt)
-            session.commit()
-            print output
-            return
-            if ctype == 'multipart/form-data':
-                fields = cgi.parse_multipart(self.rfile, pdict)
-                restaurantname = fields.get('updaterestraunt')
+            if self.path.endswith("/restaurants/new"):
+                if ctype == 'multipart/form-data':
+                    fields = cgi.parse_multipart(self.rfile, pdict)
+                    newrestaurantname = fields.get('newrestraunt')
+                output = ""
+                output += "<html><body>"
+                output += "<h2> The following restraunt has been added, thank you! </h2>"
+                output += "<h1> %s </h1>" % newrestaurantname[0]
+                output += "<h4> Would you like to enter another? </h2>"
+                output += "<form method='POST' enctype='multipart/form-data' action='/restaurants/new'><h2>Please add a new restraunt below</h2><input name='newrestraunt' type='text' ><input type='submit' value='Create'> </form>"
+                output += "<a href='/restaurants'> Return to the home page </a>"
+                output += "</body></html>"
+                self.wfile.write(output)
+                addNewRestraunt = Restaurant(name=newrestaurantname[0])
+                session.add(addNewRestraunt)
+                session.commit()
+                print output
+                return
+            if self.path.endswith("/edit"):
+                if ctype == 'multipart/form-data':
+                    fields = cgi.parse_multipart(self.rfile, pdict)
+                    restaurantname = fields.get('updaterestraunt')
 
-            restrauntIDPath = self.path.split("/")[2]
-            myRestaurantQuery = session.query(Restaurant).filter_by(id=restrauntIDPath). one()
-            output = ""
+                restrauntIDPath = self.path.split("/")[2]
+                myRestaurantQuery = session.query(Restaurant).filter_by(id=restrauntIDPath). one()
+                output = ""
 
-            output += "<form method='POST' enctype='multipart/form-data' action='/restaurants/%s/edit'>" % restrauntIDPath
-            output += "<input name='updaterestraunt' type='text'>"
-            output += "<input type='submit' value='Rename'> </form>"
-            output += "</body></html>"
-            self.wfile.write(output)
-            editRestaurant = Restaurant(name="updaterestraunt")
-            session.add(editRestaurant)
-            session.commit()
-            print output
-            return
+                output += "<form method='POST' enctype='multipart/form-data' action='/restaurants/%s/edit'>" % restrauntIDPath
+                output += "<input name='updaterestraunt' type='text'>"
+                output += "<input type='submit' value='Rename'> </form>"
+                output += "</body></html>"
+                self.wfile.write(output)
+                editRestaurant = Restaurant(name="updaterestraunt")
+                session.add(editRestaurant)
+                session.commit()
+                print output
+                return
         except IOError:
                     pass
 
