@@ -52,7 +52,7 @@ class webserverHandler(BaseHTTPRequestHandler):
                 self.send_header('Content-type', 'text/html')
                 self.end_headers()
                 restaurantIDPath = self.path.split("/")[2]
-                myRestaurantQuery = session.query(Restaurant).filter_by(id=restaurantIDPath). one()
+                myRestaurantQuery = session.query(Restaurant).filter_by(id=restaurantIDPath).one()
                 if myRestaurantQuery != []:
 
                     output = ""
@@ -98,7 +98,7 @@ class webserverHandler(BaseHTTPRequestHandler):
                     restaurantname = fields.get('updaterestaurant')
 
                 restaurantIDPath = self.path.split("/")[2]
-                myRestaurantQuery = session.query(Restaurant).filter_by(id=restaurantIDPath). one()
+                myRestaurantQuery = session.query(Restaurant).filter_by(id=restaurantIDPath).one()
                 output = ""
 
                 output += "<body><html>"
@@ -107,8 +107,8 @@ class webserverHandler(BaseHTTPRequestHandler):
                 output += "<input type='submit' value='Rename'> </form>"
                 output += "</body></html>"
                 self.wfile.write(output)
-                editRestaurant = Restaurant(name="updaterestaurant")
-                session.add(editRestaurant)
+                myRestaurantQuery.name = restaurantname[0]
+                session.add(myRestaurantQuery)
                 session.commit()
                 print output
                 return
