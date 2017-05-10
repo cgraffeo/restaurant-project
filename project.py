@@ -30,7 +30,6 @@ def newMenuItem(restaurant_id):
         return redirect(url_for('restaurantMenu', restaurant_id=restaurant_id))
     else:
         return render_template('newmenuitem.html', restaurant_id=restaurant_id)
-    return "page to create a new menu item. Task 1 complete!"
 
 # Task 2: Create route for editMenuItem function here
 
