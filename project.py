@@ -25,6 +25,10 @@ def menuItemJSON(restaurant_id, menu_id):
     return jsonify(MenuItems=menuItem.serialize)
 
 @app.route('/')
+def restaurants():
+    restaurants = session.query(Restaurant).order_by(Restaurant.name.asc()).all()
+    return render_template('restaurants.html', restaurants=restaurants)
+
 @app.route('/restaurants/<int:restaurant_id>/')
 def restaurantMenu(restaurant_id):
     restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
